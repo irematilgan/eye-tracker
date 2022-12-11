@@ -142,7 +142,7 @@ def detect_pupil(img, gray,left,right,top,bottom):
             return 1
         else:
             print("Center")
-            return -1
+            return 4
     else:
         print("Right")
         return 3
