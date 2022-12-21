@@ -3,6 +3,8 @@ import numpy as np
 import cv2
 import math
 import time
+import asyncio
+import websockets
 
 button = [20,60,450,650]
 
@@ -259,7 +261,7 @@ def run_tracker(detector, predictor, frame):
 
     
 
-def main():
+async def main(websocket, path):
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
     direction_names = ['FORWARD', 'BACKWARD','LEFT', 'RIGHT', 'CENTER']
@@ -275,8 +277,10 @@ def main():
     # cv2.setMouseCallback('image',process_click)
     # cv2.createTrackbar("Capture", 'image', 0,1, startCapture)
     # cv2.putText(frame, 'Capture: ' + 'NOT STARTED',(30,100),cv2.FONT_HERSHEY_PLAIN, 1,(0,0,255),1)
-
+    landmarks = ""
+    faces =""
     while(True):
+
         ret, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -312,11 +316,14 @@ def main():
             dir_ind, fcx, fcy = detect_pupil(frame,gray,left,right,top,bottom)
             if blinked:
                 dir_ind = 1
-     
+    
             cv2.putText(frame, 'Looking ' + direction_names[dir_ind], (30,80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1)
             cv2.circle(frame,(fcx, fcy),3, (0,0,255),1)
-        except Exception as e:
-            print(e)
+
+            response = await websocket.send(direction_names[dir_ind])
+            print(response)
+            
+        except:
             pass
 
 
@@ -335,5 +342,7 @@ def main():
     cap.release()
     cv2.destroyAllWindows()
 
-if __name__ == '__main__':
-    main()
+start_server = websockets.serve(main, "localhost", 8765)
+while True:
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()

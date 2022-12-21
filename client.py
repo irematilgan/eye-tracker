@@ -28,36 +28,38 @@ async def run_client():
         message = "Connection Establised!"
         await websocket.send(message)
         while True:
-            time.sleep(0.005) #for debuggginf purposes
+            time.sleep(0.005) #for debuggging purposes
             direction = await websocket.recv()
-            print(f"Received direction from server: {direction}")
+            print("Received direction from server: {}".format(direction))
  
             if direction == "FORWARD":
                 #Give both motors forward high
                 # GPIO.output(In1, GPIO.HIGH)
                 # GPIO.output(In2, GPIO.HIGH)
-                print(f"Direction: {direction} - FORWARD")
+                print("Direction: {} - FORWARD".format(direction))
             if direction == "BACKWARD":
                 #Give both motors forward high
                 # GPIO.output(In1, GPIO.HIGH)
                 # GPIO.output(In2, GPIO.HIGH)
-                print(f"Direction: {direction} - BACKWARD")
+                print("Direction: {} - BACKWARD".format(direction))
             if direction == "LEFT":
                 #Give both motors forward high
                 # GPIO.output(In1, GPIO.LOW)
                 # GPIO.output(In2, GPIO.HIGH)
-                print(f"Direction: {direction} - LEFT")
+                print("Direction: {} - LEFT".format(direction))
             if direction == "RIGHT":
                 #Give both motors forward high
                 # GPIO.output(In1, GPIO.HIGH)
                 # GPIO.output(In2, GPIO.LOW)
-                print(f"Direction: {direction} - RIGHT")
+                print("Direction: {} - RIGHT".format(direction))
             if direction == "CENTER":
                 #Give both motors LOW
                 # GPIO.output(In1, GPIO.LOW)
                 # GPIO.output(In2, GPIO.LOW)
-                print(f"Direction: {direction} - CENTER")
+                print("Direction: {} - CENTER".format(direction))
  
  
 while True:
-    asyncio.run(run_client())
+    # asyncio.run(run_client()) # Function used for Python 3.7
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_client())
