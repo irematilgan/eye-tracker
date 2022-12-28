@@ -3,12 +3,16 @@ import numpy as np
 import cv2
 import math
 import time
+import json
 
 button = [20,60,450,650]
 
 LEFT_EYE_POINTS = [36, 37, 38, 39, 40, 41]
 RIGHT_EYE_POINTS = [42, 43, 44, 45, 46, 47]
 THRESHOLD = 197
+
+with open("configs/config.json", "r") as json_file:
+    configs = json.load(json_file)
 
 def midpoint(p1, p2):
     mid_x = int((p1.x+p2.x)/2)
@@ -97,7 +101,10 @@ def euc_dist(a,b):
     a = np.array(a)
     b = np.array(b)
     return np.linalg.norm(a-b)
-
+def normalize(a):
+    a = int(a)
+    a = a/100
+    return a
 def detect_pupil(img, gray,left,right,top,bottom):
     gray = gray.astype(np.uint8)
     padding_x = 15
@@ -128,18 +135,18 @@ def detect_pupil(img, gray,left,right,top,bottom):
     # cv2.imshow('contour',cnt_img)
     hor_ratio = (Fcx-left[0])/(right[0]-left[0])
     # print(hor_ratio)
-    if hor_ratio < 0.35:
+    if hor_ratio < normalize(configs['EYE_LEFT']):
         print("Left")
         return 2
-    elif hor_ratio >= 0.35 and hor_ratio <= 0.65:
+    elif hor_ratio >= normalize(configs['EYE_LEFT']) and hor_ratio <= normalize(configs['EYE_RIGHT']):
         
         ver_ratio = (Fcy-bottom[1])/(top[1]-bottom[1])
         print(ver_ratio)
-        if ver_ratio >= 0.75:
+        if ver_ratio >= normalize(configs['EYE_UP']):
             print("Forward")
             
             return 0, Fcx, Fcy
-        elif ver_ratio <= 0.60:
+        elif ver_ratio <= normalize(configs['EYE_DOWN']):
             print("Backwards")
             return 1, Fcx, Fcy
         else:
