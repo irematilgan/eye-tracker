@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <link rel="stylesheet" href="https://demos.jquerymobile.com/1.4.2/css/themes/default/jquery.mobile-1.4.2.min.css">  
+        <script src="https://demos.jquerymobile.com/1.4.2/js/jquery.js"></script>
+        <script src="https://demos.jquerymobile.com/1.4.2/js/jquery.mobile-1.4.2.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EYE TRACKER | CONFIG</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript">  
+      $('input').popup(); 
+      </script>
+    <style>
+      .content {
+        width: 70%;
+        background-color: #e5e5e5;
+        margin: 0 auto;
+        padding: 20px;
+      }
+          
+    form  {
+        margin: 60px 0 0 0 !important;
+    }
+    
+    .ui-slider .ui-btn-inner {
+        padding: 4px 0 0 0 !important;
+    }
+    
+    .ui-slider-popup {
+        position: absolute !important;
+        width: 64px;
+        height: 64px;
+        text-align: center;
+        font-size: 36px;
+        padding-top: 14px;
+        z-index: 100;
+        opacity: 0.8;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div class="content">
+    <form action="" method="post">
+        <div data-role="rangeslider">
+            <h2>Left Right Slider</h2>
+            <input type="range" name="EYE_LEFT" id="range-1a" min="0" max="100" value="{{content.EYE_LEFT}}" data-popup-enabled="true" data-show-value="true">
+            <input type="range" name="EYE_RIGHT" id="range-1b" min="0" max="100" value="{{content.EYE_RIGHT}}" data-popup-enabled="true" data-show-value="true">
+        </div>
+        
+        <div data-role="rangeslider">
+            <h2>Up Down Slider</h2>
+            <input type="range" name="EYE_UP" id="range-1a" min="0" max="100" value="{{content.EYE_UP}}" data-popup-enabled="true" data-show-value="true">
+            <input type="range" name="EYE_DOWN" id="range-1b" min="0" max="100" value="{{content.EYE_DOWN}}" data-popup-enabled="true" data-show-value="true">
+        </div>
+        <input type="submit" value="Submit">
+
+    </form>
+    </div>  
+	<script src="index.js"></script>
+  </body>
+</html>
